@@ -1,9 +1,9 @@
 #!/bin/bash
 
-sudo docker build -t kafka .
+sudo docker build -t kafka KafkaDocker/Dockerfile
 
-sudo docker build -t deepstream .
+sudo docker build -t deepstream DeepstreamDocker/Dockerfile
 
-sudo docker run -it
+sudo docker run -it --name=kafka
 
-sudo docker run -it
+sudo docker run -it --name=deepstream
