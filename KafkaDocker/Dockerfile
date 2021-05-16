@@ -1,14 +1,8 @@
-FROM nvcr.io/nvidia/deepstream-l4t:5.1-21.02-samples
+FROM 247555/kafka:latest
 
-WORKDIR /root
+WORKDIR /usr/local/kafka
 
-RUN apt-get update
-RUN apt-get install build-essential -y
+RUN apt-get update 
 
-RUN git clone https://github.com/edenhill/librdkafka.git
-RUN cd librdkafka && git reset --hard 7101c2310341ab3f4675fc565f64f0967e135a6a
-CMD ./configure 
-RUN cd librdkafka && make && make install
 
-RUN sudo mkdir -p /opt/nvidia/deepstream/deepstream-5.1/lib
-RUN sudo cp /usr/local/lib/librdkafka* /opt/nvidia/deepstream/deepstream-5.1
+CMD bin/zookeeper-server-start.sh /usr/local/kafka/config/zookeeper.properties & bin/kafka-server-start.sh /usr/local/kafka/config/server.properties & bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic testTopic & bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic testTopic --from-beginning & bin/kafka-console-producer.sh --topic testTopic --bootstrap-server localhost:9092
